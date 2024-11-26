@@ -19,6 +19,7 @@ This is a web application that allows users to create and download a resume in P
 - react-to-print - print resume
 - react-hook-form - form validation
 - react-quill - rich text editor
+- html2canvas - convert HTML to canvas
 
 #### Theme
 

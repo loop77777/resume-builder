@@ -1,29 +1,24 @@
-import React from 'react';
-import ResumeTemplate1 from './Templates/ClassicLayout';
-import ResumeTemplate2 from './Templates/ModernLayout';
-import ResumeTemplate3 from './Templates/CreativeLayout';
-import { Box, Typography } from '@mui/material';
+import { Box } from "@mui/material";
+import React from "react";
+import ResumeTemplate1 from "./Templates/ClassicLayout";
+import ResumeTemplate3 from "./Templates/CreativeLayout";
+import ResumeTemplate2 from "./Templates/ModernLayout";
 
 const ResumePreview = ({ resumeData, selectedLayout }) => {
   const renderTemplate = () => {
     switch (selectedLayout) {
-      case 'layout1':
+      case "layout1":
         return <ResumeTemplate1 data={resumeData} />;
-      case 'layout2':
+      case "layout2":
         return <ResumeTemplate2 data={resumeData} />;
-      case 'layout3':
+      case "layout3":
         return <ResumeTemplate3 data={resumeData} />;
-        default:
+      default:
         return <ResumeTemplate1 data={resumeData} />;
     }
   };
 
-  return (
-    <Box>
-      <Typography variant='h4'>Preview Your Resume</Typography>
-      {renderTemplate()}
-    </Box>
-  );
+  return <Box>{renderTemplate()}</Box>;
 };
 
 export default ResumePreview;

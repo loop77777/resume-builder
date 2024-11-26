@@ -1,7 +1,14 @@
-import { Add, Remove } from '@mui/icons-material';
-import { Box, Button, Divider, IconButton, TextField, Typography } from '@mui/material';
+import { Add, Remove } from "@mui/icons-material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
@@ -9,12 +16,12 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import isBetween from "dayjs/plugin/isBetween";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import weekOfYear from "dayjs/plugin/weekOfYear";
-import React from 'react';
-import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
-import { useDispatch } from 'react-redux';
-import { setFields } from '../store/resumeSlice';
+import React from "react";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { useDispatch } from "react-redux";
+import { setFields } from "../store/resumeSlice";
 
 // Extend dayjs with the necessary plugins
 dayjs.extend(weekOfYear);
@@ -24,39 +31,75 @@ dayjs.extend(isBetween);
 dayjs.extend(advancedFormat);
 
 const ResumeForm = ({ onChange }) => {
-  const { control, handleSubmit, watch, formState: { errors } } = useForm({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       details: {
-        title: '',
-        firstName: '',
-        lastName: '',
+        title: "",
+        firstName: "",
+        lastName: "",
       },
-      summary: '',
-      experience: [{ company: '', role: '', description: '', dateRange: [null, null], location: '' }],
-      education: [{ institution: '', degree: '', description: '', dateRange: [null, null], location: '' }],
-      skills: [{ skill: '' }],
-      projects: [{ name: '', description: '' }],
+      summary: "",
+      experience: [
+        {
+          company: "",
+          role: "",
+          description: "",
+          dateRange: [null, null],
+          location: "",
+        },
+      ],
+      education: [
+        {
+          institution: "",
+          degree: "",
+          description: "",
+          dateRange: [null, null],
+          location: "",
+        },
+      ],
+      skills: [{ skill: "" }],
+      projects: [{ name: "", description: "" }],
     },
   });
 
-  const { fields: experienceFields, append: appendExperience, remove: removeExperience } = useFieldArray({
+  const {
+    fields: experienceFields,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray({
     control,
-    name: 'experience',
+    name: "experience",
   });
 
-  const { fields: educationFields, append: appendEducation, remove: removeEducation } = useFieldArray({
+  const {
+    fields: educationFields,
+    append: appendEducation,
+    remove: removeEducation,
+  } = useFieldArray({
     control,
-    name: 'education',
+    name: "education",
   });
 
-  const { fields: skillFields, append: appendSkill, remove: removeSkill } = useFieldArray({
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+  } = useFieldArray({
     control,
-    name: 'skills',
+    name: "skills",
   });
 
-  const { fields: projectFields, append: appendProject, remove: removeProject } = useFieldArray({
+  const {
+    fields: projectFields,
+    append: appendProject,
+    remove: removeProject,
+  } = useFieldArray({
     control,
-    name: 'projects',
+    name: "projects",
   });
 
   const dispatch = useDispatch();
@@ -75,7 +118,7 @@ const ResumeForm = ({ onChange }) => {
       <Controller
         name="details.title"
         control={control}
-        rules={{ required: 'Job Title is required' }}
+        rules={{ required: "Job Title is required" }}
         render={({ field }) => (
           <TextField
             {...field}
@@ -91,7 +134,7 @@ const ResumeForm = ({ onChange }) => {
         <Controller
           name="details.firstName"
           control={control}
-          rules={{ required: 'First Name is required' }}
+          rules={{ required: "First Name is required" }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -106,7 +149,7 @@ const ResumeForm = ({ onChange }) => {
         <Controller
           name="details.lastName"
           control={control}
-          rules={{ required: 'Last Name is required' }}
+          rules={{ required: "Last Name is required" }}
           render={({ field }) => (
             <TextField
               {...field}
@@ -129,17 +172,19 @@ const ResumeForm = ({ onChange }) => {
       <Controller
         name="summary"
         control={control}
-        rules={{ required: 'Summary is required' }}
+        rules={{ required: "Summary is required" }}
         render={({ field }) => (
           <ReactQuill
             {...field}
             theme="snow"
             placeholder="Write a brief summary about yourself"
-            style={{ marginBottom: '16px' }}
+            style={{ marginBottom: "16px" }}
           />
         )}
       />
-      {errors.summary && <Typography color="error">{errors.summary.message}</Typography>}
+      {errors.summary && (
+        <Typography color="error">{errors.summary.message}</Typography>
+      )}
 
       <Divider sx={{ my: 2 }} />
 
@@ -148,11 +193,17 @@ const ResumeForm = ({ onChange }) => {
         Experience
       </Typography>
       {experienceFields.map((item, index) => (
-        <Box key={item.id} display="flex" flexDirection="column" gap={2} marginBottom={2}>
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
           <Controller
             name={`experience[${index}].company`}
             control={control}
-            rules={{ required: 'Company is required' }}
+            rules={{ required: "Company is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -167,7 +218,7 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`experience[${index}].role`}
             control={control}
-            rules={{ required: 'Role is required' }}
+            rules={{ required: "Role is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -219,22 +270,26 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`experience[${index}].description`}
             control={control}
-            rules={{ required: 'Description is required' }}
+            rules={{ required: "Description is required" }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
                 placeholder="Describe your role and responsibilities"
-                style={{ marginBottom: '16px' }}
+                style={{ marginBottom: "16px" }}
               />
             )}
           />
-          {errors.experience?.[index]?.description && <Typography color="error">{errors.experience[index].description.message}</Typography>}
+          {errors.experience?.[index]?.description && (
+            <Typography color="error">
+              {errors.experience[index].description.message}
+            </Typography>
+          )}
           <IconButton
             onClick={() => removeExperience(index)}
             sx={{
-              '&:hover': {
-                backgroundColor: 'transparent',
+              "&:hover": {
+                backgroundColor: "transparent",
               },
             }}
           >
@@ -246,7 +301,15 @@ const ResumeForm = ({ onChange }) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => appendExperience({ company: '', role: '', description: '', dateRange: [null, null], location: '' })}
+        onClick={() =>
+          appendExperience({
+            company: "",
+            role: "",
+            description: "",
+            dateRange: [null, null],
+            location: "",
+          })
+        }
         startIcon={<Add />}
       >
         Add Experience
@@ -259,11 +322,17 @@ const ResumeForm = ({ onChange }) => {
         Education
       </Typography>
       {educationFields.map((item, index) => (
-        <Box key={item.id} display="flex" flexDirection="column" gap={2} marginBottom={2}>
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
           <Controller
             name={`education[${index}].institution`}
             control={control}
-            rules={{ required: 'Institution is required' }}
+            rules={{ required: "Institution is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -278,7 +347,7 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`education[${index}].degree`}
             control={control}
-            rules={{ required: 'Degree is required' }}
+            rules={{ required: "Degree is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -330,22 +399,26 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`education[${index}].description`}
             control={control}
-            rules={{ required: 'Description is required' }}
+            rules={{ required: "Description is required" }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
                 placeholder="Describe your education"
-                style={{ marginBottom: '16px' }}
+                style={{ marginBottom: "16px" }}
               />
             )}
           />
-          {errors.education?.[index]?.description && <Typography color="error">{errors.education[index].description.message}</Typography>}
+          {errors.education?.[index]?.description && (
+            <Typography color="error">
+              {errors.education[index].description.message}
+            </Typography>
+          )}
           <IconButton
             onClick={() => removeEducation(index)}
             sx={{
-              '&:hover': {
-                backgroundColor: 'transparent',
+              "&:hover": {
+                backgroundColor: "transparent",
               },
             }}
           >
@@ -357,7 +430,15 @@ const ResumeForm = ({ onChange }) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => appendEducation({ institution: '', degree: '', description: '', dateRange: [null, null], location: '' })}
+        onClick={() =>
+          appendEducation({
+            institution: "",
+            degree: "",
+            description: "",
+            dateRange: [null, null],
+            location: "",
+          })
+        }
         startIcon={<Add />}
       >
         Add Education
@@ -374,7 +455,7 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`skills[${index}].skill`}
             control={control}
-            rules={{ required: 'Skill is required' }}
+            rules={{ required: "Skill is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -389,8 +470,8 @@ const ResumeForm = ({ onChange }) => {
           <IconButton
             onClick={() => removeSkill(index)}
             sx={{
-              '&:hover': {
-                backgroundColor: 'transparent',
+              "&:hover": {
+                backgroundColor: "transparent",
               },
             }}
           >
@@ -402,7 +483,7 @@ const ResumeForm = ({ onChange }) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => appendSkill({ skill: '' })}
+        onClick={() => appendSkill({ skill: "" })}
         startIcon={<Add />}
       >
         Add Skill
@@ -415,11 +496,17 @@ const ResumeForm = ({ onChange }) => {
         Projects
       </Typography>
       {projectFields.map((item, index) => (
-        <Box key={item.id} display="flex" flexDirection="column" gap={2} marginBottom={2}>
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
           <Controller
             name={`projects[${index}].name`}
             control={control}
-            rules={{ required: 'Project Name is required' }}
+            rules={{ required: "Project Name is required" }}
             render={({ field }) => (
               <TextField
                 {...field}
@@ -434,22 +521,26 @@ const ResumeForm = ({ onChange }) => {
           <Controller
             name={`projects[${index}].description`}
             control={control}
-            rules={{ required: 'Description is required' }}
+            rules={{ required: "Description is required" }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
                 placeholder="Describe your project"
-                style={{ marginBottom: '16px' }}
+                style={{ marginBottom: "16px" }}
               />
             )}
           />
-          {errors.projects?.[index]?.description && <Typography color="error">{errors.projects[index].description.message}</Typography>}
+          {errors.projects?.[index]?.description && (
+            <Typography color="error">
+              {errors.projects[index].description.message}
+            </Typography>
+          )}
           <IconButton
             onClick={() => removeProject(index)}
             sx={{
-              '&:hover': {
-                backgroundColor: 'transparent',
+              "&:hover": {
+                backgroundColor: "transparent",
               },
             }}
           >
@@ -461,15 +552,19 @@ const ResumeForm = ({ onChange }) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => appendProject({ name: '', description: '' })}
+        onClick={() => appendProject({ name: "", description: "" })}
         startIcon={<Add />}
       >
         Add Project
       </Button>
-      {/* <Divider sx={{ my: 2 }} /> */}
-      <br />
-      <br />
-      <Button type="submit" variant="contained" color="secondary" style={{ marginTop: '16px' }}>
+
+      <Divider sx={{ my: 2 }} />
+      <Button
+        type="submit"
+        variant="contained"
+        color="secondary"
+        style={{ marginTop: "16px" }}
+      >
         Save
       </Button>
     </form>

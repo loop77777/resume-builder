@@ -16,3 +16,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.resume-content {
+  @apply w-full max-w-3xl mx-auto bg-white p-6 shadow-lg rounded-lg;
+}
