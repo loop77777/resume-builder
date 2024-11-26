@@ -1,4 +1,10 @@
-import { AppBar, FormControlLabel, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  FormControlLabel,
+  Toolbar,
+  Typography,
+  Container,
+} from "@mui/material";
 import { responsiveFontSizes, useTheme } from "@mui/material/styles";
 import React, { useContext } from "react";
 import { ColorModeContext } from "../theme/ThemeContext";
@@ -10,20 +16,22 @@ const Header = () => {
 
   return (
     <AppBar position="static">
-      <Toolbar className="w-auto mx-12">
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          Deep's Resume Builder
-        </Typography>
-        <FormControlLabel
-          control={
-            <MaterialUISwitch
-              checked={theme.palette.mode === "dark"}
-              onChange={colorMode.toggleColorMode}
-            />
-          }
-          label={theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
-        />
-      </Toolbar>
+      <Container maxWidth="lg">
+        <Toolbar disableGutters>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Deep's Resume Builder
+          </Typography>
+          <FormControlLabel
+            control={
+              <MaterialUISwitch
+                checked={theme.palette.mode === "dark"}
+                onChange={colorMode.toggleColorMode}
+              />
+            }
+            // label={theme.palette.mode === "dark" ? "Dark Mode" : "Light Mode"}
+          />
+        </Toolbar>
+      </Container>
     </AppBar>
   );
 };

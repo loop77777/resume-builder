@@ -110,7 +110,7 @@ const ResumeForm = ({ onChange }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mx-12 p-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="mt-2 mx-auto p-4">
       {/* Details Section */}
       <Typography variant="h6" gutterBottom>
         Your Details
