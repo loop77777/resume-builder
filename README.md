@@ -15,8 +15,18 @@ This is a web application that allows users to create and download a resume in P
 - Tailwind CSS
 - react-redux
 - react-router-dom
-- react-to-print
+- @mui/x-date-picker, @mui/x-date-picker-pro - Date picker
+- react-to-print - print resume
+- react-hook-form - form validation
+- react-quill - rich text editor
 
 #### Theme
 
 - [resume-builder-theme](./src/theme/resume-theme-codes.txt)
+
+#### Components
+
+- Header
+- Layout
+- Resume
+- Footer
