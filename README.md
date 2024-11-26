@@ -41,3 +41,13 @@ This is a web application that allows users to create and download a resume in P
 Template 1: Classic Layout: A traditional resume layout with sections stacked vertically.
 Template 2: Modern Layout: A modern layout with a sidebar for skills and a main content area for other sections.
 Template 3: Creative Layout: A creative layout with a split view for experience and education, and a centered header.
+
+---
+
+dayjs Formatting: Used dayjs to format the dateRange values to strings before rendering them.
+Grid2: Used Grid2 for layout in ResumeTemplate2 and ResumeTemplate3.
+dangerouslySetInnerHTML: Used dangerouslySetInnerHTML to render the HTML content in the ResumePreview component.
+
+Why dangerouslySetInnerHTML is Used:
+Rendering Rich Text: When using rich text editors like ReactQuill, the content is often stored as HTML strings. To render this HTML content correctly in your React components, you need to use dangerouslySetInnerHTML.
+HTML Content: If your data includes HTML tags (e.g., <p>, <b>, <i>), using dangerouslySetInnerHTML ensures that these tags are rendered as HTML elements rather than plain text.

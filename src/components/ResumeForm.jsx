@@ -1,20 +1,20 @@
-import React from 'react';
-import { useForm, useFieldArray, Controller } from 'react-hook-form';
-import { Button, TextField, IconButton, Typography, Box, Divider } from '@mui/material';
 import { Add, Remove } from '@mui/icons-material';
+import { Box, Button, Divider, IconButton, TextField, Typography } from '@mui/material';
+import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
+import dayjs from "dayjs";
+import advancedFormat from "dayjs/plugin/advancedFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import isBetween from "dayjs/plugin/isBetween";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import weekOfYear from "dayjs/plugin/weekOfYear";
+import React from 'react';
+import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useDispatch } from 'react-redux';
 import { setFields } from '../store/resumeSlice';
-import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import isBetween from "dayjs/plugin/isBetween";
-import advancedFormat from "dayjs/plugin/advancedFormat";
 
 // Extend dayjs with the necessary plugins
 dayjs.extend(weekOfYear);

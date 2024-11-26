@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, Typography, Divider } from '@mui/material';
+import React from "react";
+import { Box, Typography, Divider } from "@mui/material";
+import dayjs from "dayjs";
 
 const ResumeTemplate1 = ({ data }) => (
   <Box className="p-8 bg-white shadow-lg rounded-lg">
@@ -24,7 +25,8 @@ const ResumeTemplate1 = ({ data }) => (
           {exp.company}
         </Typography>
         <Typography variant="subtitle1" className="italic">
-          {exp.role} ({exp.dateRange[0]} - {exp.dateRange[1]})
+          {exp.role} ({dayjs(exp.dateRange[0]).format("MMM YYYY")} -{" "}
+          {dayjs(exp.dateRange[1]).format("MMM YYYY")})
         </Typography>
         <Typography variant="body2" className="mb-2">
           {exp.location}
@@ -42,7 +44,8 @@ const ResumeTemplate1 = ({ data }) => (
           {edu.institution}
         </Typography>
         <Typography variant="subtitle1" className="italic">
-          {edu.degree} ({edu.dateRange[0]} - {edu.dateRange[1]})
+          {edu.degree} ({dayjs(edu.dateRange[0]).format("MMM YYYY")} -{" "}
+          {dayjs(edu.dateRange[1]).format("MMM YYYY")})
         </Typography>
         <Typography variant="body2" className="mb-2">
           {edu.location}
