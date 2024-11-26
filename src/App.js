@@ -1,9 +1,14 @@
-function App() {
-  return (
-    <div>
-      <h1 className="bg-red-50">hello world!</h1>
-    </div>
-  );
-}
+import React from "react";
+import { CssBaseline } from "@mui/material";
+import { ColorModeProvider } from "./theme/ThemeContext";
+import Header from "./components/Header";
+
+const App = () => (
+  <ColorModeProvider>
+    <CssBaseline />
+    <Header />
+    {/* Other components */}
+  </ColorModeProvider>
+);
 
 export default App;
