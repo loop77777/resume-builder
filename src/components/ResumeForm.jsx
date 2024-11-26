@@ -1,312 +1,212 @@
 import React from "react";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { Button, TextField, IconButton, Typography, Box } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { LocalizationProvider } from "@mui/x-date-pickers-pro/LocalizationProvider";
-import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import dayjs from "dayjs";
-import weekOfYear from "dayjs/plugin/weekOfYear";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-import localizedFormat from "dayjs/plugin/localizedFormat";
-import isBetween from "dayjs/plugin/isBetween";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-
-// Extend dayjs with the necessary plugins
-dayjs.extend(weekOfYear);
-dayjs.extend(customParseFormat);
-dayjs.extend(localizedFormat);
-dayjs.extend(isBetween);
-dayjs.extend(advancedFormat);
+import { useDispatch } from "react-redux";
+import { setFields } from "../redux/resumeSlice";
 
 const ResumeForm = ({ onChange }) => {
-  const { control, handleSubmit, watch } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
-      fields: [{ name: "", value: "" }],
+      details: {
+        title: "",
+        firstName: "",
+        lastName: "",
+      },
+      summary: "",
+      experience: [{ company: "", role: "", description: "" }],
+      education: [{ institution: "", degree: "", description: "" }],
+      skills: [{ skill: "" }],
+      projects: [{ name: "", description: "" }],
     },
   });
 
-  const { fields, append, remove } = useFieldArray({
+  const {
+    fields: experienceFields,
+    append: appendExperience,
+    remove: removeExperience,
+  } = useFieldArray({
     control,
-    name: "fields",
+    name: "experience",
   });
+
+  const {
+    fields: educationFields,
+    append: appendEducation,
+    remove: removeEducation,
+  } = useFieldArray({
+    control,
+    name: "education",
+  });
+
+  const {
+    fields: skillFields,
+    append: appendSkill,
+    remove: removeSkill,
+  } = useFieldArray({
+    control,
+    name: "skills",
+  });
+
+  const {
+    fields: projectFields,
+    append: appendProject,
+    remove: removeProject,
+  } = useFieldArray({
+    control,
+    name: "projects",
+  });
+
+  const dispatch = useDispatch();
 
   const onSubmit = (data) => {
     onChange(data);
+    dispatch(setFields(data));
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-4 mx-12 p-4">
-      {/* Details */}
+      {/* Details Section */}
       <Typography variant="h6" gutterBottom>
         Your Details
       </Typography>
-      <TextField
-        name="title"
-        label="Job Title"
-        variant="outlined"
-        margin="dense"
+      <Controller
+        name="details.title"
+        control={control}
+        rules={{ required: "Job Title is required" }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            label="Job Title"
+            variant="outlined"
+            margin="dense"
+            error={!!errors.details?.title}
+            helperText={errors.details?.title?.message}
+          />
+        )}
       />
       <Box display={"flex"} gap={2}>
-        <TextField
-          name="firstName"
-          label="First Name"
-          variant="outlined"
-          margin="dense"
+        <Controller
+          name="details.firstName"
+          control={control}
+          rules={{ required: "First Name is required" }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="First Name"
+              variant="outlined"
+              margin="dense"
+              error={!!errors.details?.firstName}
+              helperText={errors.details?.firstName?.message}
+            />
+          )}
         />
-        <TextField
-          name="lastName"
-          label="Last Name"
-          variant="outlined"
-          margin="dense"
+        <Controller
+          name="details.lastName"
+          control={control}
+          rules={{ required: "Last Name is required" }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Last Name"
+              variant="outlined"
+              margin="dense"
+              error={!!errors.details?.lastName}
+              helperText={errors.details?.lastName?.message}
+            />
+          )}
         />
       </Box>
-      <Box display={"flex"} gap={2}>
-        <TextField
-          name="email"
-          label="Email"
-          variant="outlined"
-          margin="dense"
-        />
-        <TextField
-          name="phone"
-          label="Phone"
-          variant="outlined"
-          margin="dense"
-        />
-      </Box>
-      <br />
-      <Divider className="my-4" />
-      <br />
-      {/* Bio */}
+
+      {/* Summary Section */}
       <Typography variant="h6" gutterBottom>
         Summary
-      </Typography>
-      <Typography variant="body2" gutterBottom width={1 / 2}>
-        Be concise - The harsh reality is that hiring managers spend an average
-        of six seconds on each resume. So, you'll want to keep your summary
-        short and sweet.
       </Typography>
       <Controller
         name="summary"
         control={control}
+        rules={{ required: "Summary is required" }}
         render={({ field }) => (
           <ReactQuill
             {...field}
             theme="snow"
-            placeholder="Summary"
-            style={{ width: "100%", marginBottom: "16px" }}
+            placeholder="Write a brief summary about yourself"
+            style={{ marginBottom: "16px" }}
           />
         )}
       />
-      <br />
-      <Divider className="my-4" />
-      <br />
-      {/* Experience */}
+      {errors.summary && (
+        <Typography color="error">{errors.summary.message}</Typography>
+      )}
+
+      {/* Experience Section */}
       <Typography variant="h6" gutterBottom>
         Experience
       </Typography>
-      <Typography variant="body2" gutterBottom width={1 / 2}>
-        List your most recent experience first. Include your job title, the
-        company name, and dates worked. Add up to 5 bullet points describing
-        your responsibilities and achievements.
-      </Typography>
-      <Box display={"flex"} gap={2}>
-        <TextField
-          name="jobTitle"
-          label="Job Title"
-          variant="outlined"
-          margin="dense"
-        />
-        <TextField
-          name="company"
-          label="Company/Employer"
-          variant="outlined"
-          margin="dense"
-        />
-      </Box>
-      <Typography variant="body2" gutterBottom>
-        Period
-      </Typography>
-      <Box display={"flex"} gap={2}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DateRangePicker"]}>
-            <DateRangePicker localeText={{ start: "Start", end: "End" }} />
-          </DemoContainer>
-        </LocalizationProvider>
-        <TextField
-          name="location"
-          label="Location"
-          variant="outlined"
-          margin="dense"
-        />
-      </Box>
-      <Controller
-        name="description"
-        control={control}
-        render={({ field }) => (
-          <ReactQuill
-            {...field}
-            theme="snow"
-            placeholder="Description"
-            style={{ width: "100%", marginBottom: "16px" }}
-          />
-        )}
-      />
-      <Button
-        type="button"
-        variant="contained"
-        color="primary"
-        onClick={() => append({ name: "", value: "" })}
-        startIcon={<Add />}
-      >
-        Add Field
-      </Button>
-      <br />
-      <br />
-      <Divider className="my-4" />
-      <br />
-      {/* Education */}
-      <Typography variant="h6" gutterBottom>
-        Education
-      </Typography>
-      <Typography variant="body2" gutterBottom width={1 / 2}>
-        List your most recent education first. Include your degree, major,
-        school name, and dates attended. Add up to 5 bullet points describing
-        your responsibilities and achievements.
-      </Typography>
-      <Box display={"flex"} gap={2}>
-        <TextField
-          name="degree"
-          label="Degree"
-          variant="outlined"
-          margin="dense"
-        />
-        <TextField
-          name="major"
-          label="Major"
-          variant="outlined"
-          margin="dense"
-        />
-      </Box>
-      <Box display={"flex"} gap={2}>
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <DemoContainer components={["DateRangePicker"]}>
-            <DateRangePicker localeText={{ start: "Start", end: "End" }} />
-          </DemoContainer>
-        </LocalizationProvider>
-        <TextField
-          name="location"
-          label="Location"
-          variant="outlined"
-          margin="dense"
-        />
-      </Box>
-      <Controller
-        name="description"
-        control={control}
-        render={({ field }) => (
-          <ReactQuill
-            {...field}
-            theme="snow"
-            placeholder="Description"
-            style={{ width: "100%", marginBottom: "16px" }}
-          />
-        )}
-      />
-      <Button
-        type="button"
-        variant="contained"
-        color="primary"
-        onClick={() => append({ name: "", value: "" })}
-        startIcon={<Add />}
-      >
-        Add Field
-      </Button>
-      <br />
-      <br />
-      <Divider className="my-4" />
-      <br />
-      {/* Skills */}
-      <Typography variant="h6" gutterBottom>
-        Skills
-      </Typography>
-      <Typography variant="body2" gutterBottom width={1 / 2}>
-        List your most relevant skills first. Include up to 10 skills.
-      </Typography>
-      {fields.map((field, index) => (
-        <Box display={"flex"} gap={2} key={field.id}>
-          <TextField
-            {...`fields.${index}.name`}
-            label="Skill"
-            variant="outlined"
-            margin="dense"
-          />
-          <IconButton
-            type="button"
-            onClick={() => remove(index)}
-            color="secondary"
-          >
-            <Remove />
-          </IconButton>
-        </Box>
-      ))}
-      <Button
-        type="button"
-        variant="contained"
-        color="primary"
-        onClick={() => append({ name: "", value: "" })}
-        startIcon={<Add />}
-      >
-        Add Field
-      </Button>
-      <br />
-      <br />
-      <Divider className="my-4" />
-      <br />
-      {/* Projects */}
-      <Typography variant="h6" gutterBottom>
-        Projects & Achievements
-      </Typography>
-      <Typography variant="body2" gutterBottom width={1 / 2}>
-        List your most relevant projects and achievements first. Include up to 5
-        projects and achievements.
-      </Typography>
-      {fields.map((field, index) => (
-        <Box display={"flex"} gap={2} key={field.id}>
-          <TextField
-            {...`fields.${index}.name`}
-            label="Project/Achievement"
-            variant="outlined"
-            margin="dense"
+      {experienceFields.map((item, index) => (
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
+          <Controller
+            name={`experience[${index}].company`}
+            control={control}
+            rules={{ required: "Company is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Company"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.experience?.[index]?.company}
+                helperText={errors.experience?.[index]?.company?.message}
+              />
+            )}
           />
           <Controller
-            name={`fields.${index}.value`}
+            name={`experience[${index}].role`}
             control={control}
+            rules={{ required: "Role is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Role"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.experience?.[index]?.role}
+                helperText={errors.experience?.[index]?.role?.message}
+              />
+            )}
+          />
+          <Controller
+            name={`experience[${index}].description`}
+            control={control}
+            rules={{ required: "Description is required" }}
             render={({ field }) => (
               <ReactQuill
                 {...field}
                 theme="snow"
-                placeholder="Description"
-                style={{ width: "100%", marginBottom: "16px" }}
+                placeholder="Describe your role and responsibilities"
+                style={{ marginBottom: "16px" }}
               />
             )}
           />
-          <IconButton
-            type="button"
-            onClick={() => remove(index)}
-            color="secondary"
-          >
+          {errors.experience?.[index]?.description && (
+            <Typography color="error">
+              {errors.experience[index].description.message}
+            </Typography>
+          )}
+          <IconButton onClick={() => removeExperience(index)}>
             <Remove />
           </IconButton>
         </Box>
@@ -315,15 +215,193 @@ const ResumeForm = ({ onChange }) => {
         type="button"
         variant="contained"
         color="primary"
-        onClick={() => append({ name: "", value: "" })}
+        onClick={() =>
+          appendExperience({ company: "", role: "", description: "" })
+        }
         startIcon={<Add />}
       >
-        Add Field
+        Add Experience
       </Button>
-      <br />
-      <br />
-      <br />
-      <Button type="submit" variant="contained" color="secondary">
+
+      {/* Education Section */}
+      <Typography variant="h6" gutterBottom>
+        Education
+      </Typography>
+      {educationFields.map((item, index) => (
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
+          <Controller
+            name={`education[${index}].institution`}
+            control={control}
+            rules={{ required: "Institution is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Institution"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.education?.[index]?.institution}
+                helperText={errors.education?.[index]?.institution?.message}
+              />
+            )}
+          />
+          <Controller
+            name={`education[${index}].degree`}
+            control={control}
+            rules={{ required: "Degree is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Degree"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.education?.[index]?.degree}
+                helperText={errors.education?.[index]?.degree?.message}
+              />
+            )}
+          />
+          <Controller
+            name={`education[${index}].description`}
+            control={control}
+            rules={{ required: "Description is required" }}
+            render={({ field }) => (
+              <ReactQuill
+                {...field}
+                theme="snow"
+                placeholder="Describe your education"
+                style={{ marginBottom: "16px" }}
+              />
+            )}
+          />
+          {errors.education?.[index]?.description && (
+            <Typography color="error">
+              {errors.education[index].description.message}
+            </Typography>
+          )}
+          <IconButton onClick={() => removeEducation(index)}>
+            <Remove />
+          </IconButton>
+        </Box>
+      ))}
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={() =>
+          appendEducation({ institution: "", degree: "", description: "" })
+        }
+        startIcon={<Add />}
+      >
+        Add Education
+      </Button>
+
+      {/* Skills Section */}
+      <Typography variant="h6" gutterBottom>
+        Skills
+      </Typography>
+      {skillFields.map((item, index) => (
+        <Box key={item.id} display="flex" alignItems="center" marginBottom={2}>
+          <Controller
+            name={`skills[${index}].skill`}
+            control={control}
+            rules={{ required: "Skill is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Skill"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.skills?.[index]?.skill}
+                helperText={errors.skills?.[index]?.skill?.message}
+              />
+            )}
+          />
+          <IconButton onClick={() => removeSkill(index)}>
+            <Remove />
+          </IconButton>
+        </Box>
+      ))}
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={() => appendSkill({ skill: "" })}
+        startIcon={<Add />}
+      >
+        Add Skill
+      </Button>
+
+      {/* Projects Section */}
+      <Typography variant="h6" gutterBottom>
+        Projects
+      </Typography>
+      {projectFields.map((item, index) => (
+        <Box
+          key={item.id}
+          display="flex"
+          flexDirection="column"
+          gap={2}
+          marginBottom={2}
+        >
+          <Controller
+            name={`projects[${index}].name`}
+            control={control}
+            rules={{ required: "Project Name is required" }}
+            render={({ field }) => (
+              <TextField
+                {...field}
+                label="Project Name"
+                variant="outlined"
+                margin="dense"
+                error={!!errors.projects?.[index]?.name}
+                helperText={errors.projects?.[index]?.name?.message}
+              />
+            )}
+          />
+          <Controller
+            name={`projects[${index}].description`}
+            control={control}
+            rules={{ required: "Description is required" }}
+            render={({ field }) => (
+              <ReactQuill
+                {...field}
+                theme="snow"
+                placeholder="Describe your project"
+                style={{ marginBottom: "16px" }}
+              />
+            )}
+          />
+          {errors.projects?.[index]?.description && (
+            <Typography color="error">
+              {errors.projects[index].description.message}
+            </Typography>
+          )}
+          <IconButton onClick={() => removeProject(index)}>
+            <Remove />
+          </IconButton>
+        </Box>
+      ))}
+      <Button
+        type="button"
+        variant="contained"
+        color="primary"
+        onClick={() => appendProject({ name: "", description: "" })}
+        startIcon={<Add />}
+      >
+        Add Project
+      </Button>
+
+      <Button
+        type="submit"
+        variant="contained"
+        color="secondary"
+        style={{ marginTop: "16px" }}
+      >
         Save
       </Button>
     </form>
