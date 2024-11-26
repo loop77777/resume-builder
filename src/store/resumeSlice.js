@@ -7,8 +7,8 @@ const initialState = {
     lastName: '',
   },
   summary: '',
-  experience: [{ company: '', role: '', description: '' }],
-  education: [{ institution: '', degree: '', description: '' }],
+  experience: [{ company: '', role: '', description: '', dateRange: [null, null], location: '' }],
+  education: [{ institution: '', degree: '', description: '', dateRange: [null, null], location: '' }],
   skills: [{ skill: '' }],
   projects: [{ name: '', description: '' }],
 };

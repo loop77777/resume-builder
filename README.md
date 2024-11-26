@@ -27,6 +27,17 @@ This is a web application that allows users to create and download a resume in P
 #### Components
 
 - Header
-- Layout
-- Resume
+- Layout: LayoutSelector, ResumePreview
+- Resume form: PersonalInfo, Experience, Education, Skills, Projects
+- ResumeBuilder: Manages the form, layout selection, preview, and download/print functionality.
+- ResumePreview: Dynamically renders the selected resume template.
+- ResumeTemplate1 and ResumeTemplate2: Different layouts for the resume.
+- LayoutSelector: Allows the user to select a layout.
+- SaveResume: Handles saving the resume as a PDF.
 - Footer
+
+#### Resume Templates
+
+Template 1: Classic Layout: A traditional resume layout with sections stacked vertically.
+Template 2: Modern Layout: A modern layout with a sidebar for skills and a main content area for other sections.
+Template 3: Creative Layout: A creative layout with a split view for experience and education, and a centered header.
